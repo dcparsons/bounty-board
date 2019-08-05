@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\public\css\" />
-    <Folder Include="lib\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
