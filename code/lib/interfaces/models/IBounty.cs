@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace bounty_board.models
 {
@@ -11,5 +12,6 @@ namespace bounty_board.models
         int Points { get; set; }
         DateTime CreatedDtm { get; set; }
         bool Repeatable { get; set; }
+        IEnumerable<IBounty> Children { get; set; }
     }
 }

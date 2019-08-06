@@ -1,22 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
 using bounty_board.models;
 
 using Dapper;
+using Microsoft.Extensions.Configuration;
+
 namespace bounty_board.repos
 {
     public class BountyRepo : IBountyRepo
     {
+        private readonly string _cnxString;
+        public BountyRepo(IConfiguration configuration)
+        {
+            _cnxString = configuration.GetConnectionString("bounty-connection");
+        }
         public IEnumerable<IBounty> GetBounties()
         {
-            using (var cnx = new SqlConnection(""))
+            IEnumerable<IBounty> bounties;
+
+            using (var cnx = new SqlConnection(_cnxString))
             {
-                return cnx.Query<IBounty>("exec usp_Bounties_Select").ToList();
+                var lst = cnx.Query<Bounty>("exec usp_Bounties_Select").ToList();
+                var parents = lst.Where(x => x.PID == 0).ToList();
+                parents.ForEach(x => { x.Children = BuildHierarchy(x, lst); });
+                bounties = parents;
             }
+
+            return bounties;
+
+        }
+
+        private IEnumerable<IBounty> BuildHierarchy(IBounty currentBounty, IEnumerable<IBounty> bounties)
+        {
+            var currentList = bounties.Where(x => x.PID == currentBounty.ID).ToList();
+            currentList.ForEach(x =>
+            {
+                x.Children = BuildHierarchy(x, bounties);
+            });
+            return currentList;
         }
     }
 }

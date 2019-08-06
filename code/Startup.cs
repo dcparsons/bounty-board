@@ -1,3 +1,7 @@
+using bounty_board.controllers;
+using bounty_board.Controllers;
+using bounty_board.models;
+using bounty_board.repos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -21,6 +25,9 @@ namespace bounty_board
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddTransient<IBountyRepo, BountyRepo>();
+            services.AddScoped<IBountyController, BountyController>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

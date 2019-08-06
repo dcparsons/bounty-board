@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using bounty_board.controllers;
 using bounty_board.repos;
+using Newtonsoft.Json;
 
 namespace bounty_board.Controllers
 {
@@ -21,9 +16,10 @@ namespace bounty_board.Controllers
             _repo = repo;
         }
 
+        [HttpGet]
         public string GetBounties()
         {
-            return string.Empty;
+            return JsonConvert.SerializeObject(_repo.GetBounties());
         }
     }
 }
