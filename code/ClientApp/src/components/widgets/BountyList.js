@@ -13,6 +13,7 @@ import BountyDialog from '../../util/BountyDialog';
 import API from '../../util/BountyAPI';
 
 export default class BountyList extends React.Component {
+    selectedBounty = "";
 
     styles = makeStyles(theme => ({
         root: {
@@ -86,10 +87,19 @@ export default class BountyList extends React.Component {
         });
     }
 
-    handleDialogOpen() {
+    handleDialogOpen(selectedItem) {
+        this.selectedBounty = selectedItem.Title;
         this.setState({
             dialogIsOpen: true
         });
+    }
+
+    onEmployeeIDChange(event) {
+        var empID = event.target.value;
+    }
+
+    takeBounty() {
+
     }
 
     render() {
@@ -101,7 +111,7 @@ export default class BountyList extends React.Component {
                         if (item.Children.length === 0) {
                             return (
                                 <Tooltip title="Click to accept bounty">
-                                    <ListItem button onClick={this.handleDialogOpen}>
+                                    <ListItem button onClick={() => this.handleDialogOpen(item)}>
                                         <ListItemText primary={item.Title + ' - ' + item.Points + 'pts'} secondary={item.Description} />
                                     </ListItem>
                                 </Tooltip>
@@ -122,7 +132,7 @@ export default class BountyList extends React.Component {
                                                 item.Children.map(item => {
                                                     return (
                                                         <Tooltip title="Click to accept bounty">
-                                                            <ListItem button onClick={() => this.handleDialogOpen} className={this.styles.nested}>
+                                                            <ListItem button onClick={() => this.handleDialogOpen(item)} className={this.styles.nested}>
                                                                 <ListItemText primary={item.Title + ' - ' + item.Points + 'pts'} secondary={item.Description} />
                                                             </ListItem>
                                                         </Tooltip>
@@ -136,7 +146,9 @@ export default class BountyList extends React.Component {
                              }
                              })}
                 </List>
-                <BountyDialog IsOpen={this.state.dialogIsOpen} onClose={this.handleDialogClose} />
+
+                <BountyDialog IsOpen={this.state.dialogIsOpen} onClose={this.handleDialogClose}
+                    selectedBounty={this.selectedBounty} onEmployeeIDChange={this.onEmployeeIDChange} takeBounty={this.takeBounty} />
             </div>
                 );
             }
