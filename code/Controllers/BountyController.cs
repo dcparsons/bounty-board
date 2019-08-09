@@ -21,5 +21,11 @@ namespace bounty_board.Controllers
         {
             return JsonConvert.SerializeObject(_repo.GetBounties());
         }
+
+        [HttpGet]
+        public string IsEmployeeIDValid(int id)
+        {
+            return JsonConvert.SerializeObject(_repo.IsEmployeeIDValid(id));
+        }
     }
 }

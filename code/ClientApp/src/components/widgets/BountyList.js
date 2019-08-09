@@ -14,6 +14,7 @@ import API from '../../util/BountyAPI';
 
 export default class BountyList extends React.Component {
     selectedBounty = "";
+    employeeID = 0;
 
     styles = makeStyles(theme => ({
         root: {
@@ -95,11 +96,16 @@ export default class BountyList extends React.Component {
     }
 
     onEmployeeIDChange(event) {
-        var empID = event.target.value;
+        this.employeeID = event.target.value;
+        if (this.employeeID.length < 5) return;
+
+        API.isEmployeeIDValid(this.employeeID).then(res => {
+
+        })
     }
 
     takeBounty() {
-
+        
     }
 
     render() {

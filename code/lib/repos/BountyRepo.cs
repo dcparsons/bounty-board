@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -30,6 +31,17 @@ namespace bounty_board.repos
 
             return bounties;
 
+        }
+
+        public bool IsEmployeeIDValid(int id)
+        {
+            var retval = false;
+            using (var cnx = new SqlConnection(_cnxString))
+            {
+                retval = ((SqlDataReader)cnx.ExecuteReader("exec usp_Users_Select @id", new { id = id }, commandType:CommandType.StoredProcedure)).HasRows;
+            }
+
+            return retval;
         }
 
         private IEnumerable<IBounty> BuildHierarchy(IBounty currentBounty, IEnumerable<IBounty> bounties)

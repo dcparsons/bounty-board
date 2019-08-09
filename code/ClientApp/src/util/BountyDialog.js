@@ -35,6 +35,9 @@ export default class BountyDialog extends React.Component {
                             InputLabelProps={{
                                 shrink: true,
                             }}
+                            onInput={(e) => {
+                                e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 5)
+                            }}
                         />
                     </DialogContent>
                     <DialogActions>

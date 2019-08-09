@@ -7,5 +7,6 @@ namespace bounty_board.repos
     public interface IBountyRepo
     {
         IEnumerable<IBounty> GetBounties();
+        bool IsEmployeeIDValid(int id);
     }
 }
