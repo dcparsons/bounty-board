@@ -39,7 +39,6 @@ export default class Countdown extends React.Component {
         this.setState({
             counterText: days + " DAYS " + hours + " HOURS " + mins + " MINUTES " + seconds + " SECONDS ",
         });
-        console.log("here");
     }
 
     render() {
