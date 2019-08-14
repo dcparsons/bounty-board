@@ -6,7 +6,7 @@ export default {
     },
     isEmployeeIDValid: function (empID) {
         return axios.get(process.env.REACT_APP_API_URL + "bounty/IsEmployeeIDValid", {
-            params: { id = empID }
+            params: { id : empID }
         });
     }
 }
