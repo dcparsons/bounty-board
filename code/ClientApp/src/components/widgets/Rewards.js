@@ -15,7 +15,7 @@ export default class Rewards extends React.Component {
     render() {
         return (
             <div>
-
+                Rewards Active: {this.props.totalPoints >= 500 ? "Yes" : "No"}
             </div>
         );
     }

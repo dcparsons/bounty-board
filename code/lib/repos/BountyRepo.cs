@@ -38,7 +38,7 @@ namespace bounty_board.repos
 
             using (var cnx = new SqlConnection(_cnxString))
             {
-                users = cnx.Query<User>(string.Format("exec usp_Users_Select @id={0}", id)).ToList();
+                users = cnx.Query<User>("exec usp_Users_Select @id", new { id }).ToList();
             }
 
             return users;
@@ -50,7 +50,7 @@ namespace bounty_board.repos
             using (var cnx = new SqlConnection(_cnxString))
             {
                 //This is pretty messy but Dapper doesn't expose an IDataReader or a HasRows property
-                var rdr = (SqlDataReader) ((IWrappedDataReader) cnx.ExecuteReader(
+                var rdr = (SqlDataReader)((IWrappedDataReader)cnx.ExecuteReader(
                     string.Format("exec usp_Users_Select @id={0}", id))).Reader;
                 retval = rdr.HasRows;
             }

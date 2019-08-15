@@ -11,6 +11,9 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Countdown from '../widgets/Countdown';
 
+import Leaderboard from '../widgets/Leaderboard';
+import Rewards from '../widgets/Rewards';
+
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 const styles = theme => ({
@@ -36,7 +39,7 @@ const styles = theme => ({
 });
 
 function Header(props) {
-    const { classes, onDrawerToggle } = props;
+    const { classes, onDrawerToggle, users, totalPoints } = props;
 
     return (
         <React.Fragment>
@@ -88,16 +91,11 @@ function Header(props) {
                 <Toolbar>
                     <Grid container alignItems="center" spacing={1}>
                         <Grid item>
-                            <Typography color="inherit" component="span">
-                                1st: None | 2nd: None | 3rd: None | Total Team Points: 0
-                                [Control]
-              </Typography>
+                            <Leaderboard users={users} totalPoints={totalPoints} />
                         </Grid>
                         <Grid item xs />
                         <Grid item>
-                            <Typography color="inherit" component="span">
-                                Rewards Active: Yes | No [Control]
-              </Typography>
+                            <Rewards />
                         </Grid>
                     </Grid>
                 </Toolbar>

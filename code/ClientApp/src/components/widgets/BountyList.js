@@ -142,7 +142,7 @@ export default class BountyList extends React.Component {
 
     takeBounty() {
         API.assignBounty(this.state.selectedEmployeeID, this.state.selectedBounty.ID).then(res => {
-            console.log("after assignment");
+            
         });
         this.handleDialogClose();
     }

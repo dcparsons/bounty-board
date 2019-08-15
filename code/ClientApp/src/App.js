@@ -11,8 +11,9 @@ import Header from './components/theme/Header';
 
 import Dashboard from './components/pages/Dashboard';
 import Leaderboard from './components/pages/Leaderboard';
-import Bounites from './components/pages/Bounties';
 import Bounties from './components/pages/Bounties';
+
+import API from './util/BountyAPI';
 
 let theme = createMuiTheme({
     typography: {
@@ -153,11 +154,34 @@ const styles = {
 class App extends React.Component {
     state = {
         mobileOpen: false,
+        users: [],
+        totalPoints: 0
     };
 
     handleDrawerToggle = () => {
         this.setState(state => ({ mobileOpen: !state.mobileOpen }));
     };
+
+    componentDidMount() {
+        API.getUsers(null).then(res => {
+            var totalPoints = 0;
+            var users = res.data;
+
+            for (var x = 0; x < users.length; x++) {
+                totalPoints += users[x].Points;
+            }
+
+            users.sort((function (a, b) {
+                return parseInt(a.Points) - parseInt(b.Points);
+            }));
+
+            this.setState({
+                users: users,
+                totalPoints: totalPoints
+            });
+        });
+        
+    }
 
     render() {
         const { classes } = this.props;
@@ -181,7 +205,7 @@ class App extends React.Component {
                             </Hidden>
                         </nav>
                         <div className={classes.appContent}>
-                            <Header onDrawerToggle={this.handleDrawerToggle} />
+                            <Header onDrawerToggle={this.handleDrawerToggle} users={this.state.users} totalPoints={this.state.totalPoints} />
                             <main className={classes.mainContent}>
 
                                 <Route path="/" exact render={() => (<Dashboard />)} />

@@ -20,7 +20,6 @@ const categories = [
         id: 'Functions',
         children: [
             { id: <Link to='/'>Dashboad</Link>, icon: <DnsRoundedIcon />, active: true },
-            { id: <Link to='/my-bounties'>My Bounties</Link>, icon: <BugReportIcon /> },
             { id: <Link to='/leaderboard'>Leaderboard</Link>, icon: <PeopleIcon />}
             
         ],
