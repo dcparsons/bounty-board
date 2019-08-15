@@ -47,6 +47,15 @@ namespace bounty_board.repos
             return retval;
         }
 
+        public void AssignBounty(IBountyAssignment bountyAssignment)
+        {
+            using (var cnx = new SqlConnection(_cnxString))
+            {
+                cnx.Execute(
+                    string.Format("exec usp_Bounties_Assign @userID={0}, @bountyID={1}", bountyAssignment.UserID, bountyAssignment.BountyID));
+            }
+        }
+
         private IEnumerable<IBounty> BuildHierarchy(IBounty currentBounty, IEnumerable<IBounty> bounties)
         {
             var currentList = bounties.Where(x => x.PID == currentBounty.ID).ToList();

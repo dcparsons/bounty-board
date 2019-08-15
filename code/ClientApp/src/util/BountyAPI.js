@@ -8,5 +8,11 @@ export default {
         return axios.get(process.env.REACT_APP_API_URL + "bounty/IsEmployeeIDValid", {
             params: { id : empID }
         });
+    },
+    assignBounty: function (empID, bounty) {
+        return axios.post(process.env.REACT_APP_API_URL + "bounty/AssignBounty", {
+            UserID: empID,
+            BountyID : bounty
+        });
     }
 }

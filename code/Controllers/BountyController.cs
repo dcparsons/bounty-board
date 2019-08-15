@@ -2,6 +2,8 @@
 
 using bounty_board.controllers;
 using bounty_board.repos;
+using bounty_board.models;
+
 using Newtonsoft.Json;
 
 namespace bounty_board.Controllers
@@ -26,6 +28,12 @@ namespace bounty_board.Controllers
         public string IsEmployeeIDValid(int id)
         {
             return JsonConvert.SerializeObject(_repo.IsEmployeeIDValid(id));
+        }
+
+        [HttpPost]
+        public void AssignBounty([FromBody]BountyAssignment model)
+        {
+            _repo.AssignBounty(model);
         }
     }
 }

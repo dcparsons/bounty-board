@@ -9,14 +9,17 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import BountyDialog from '../../util/BountyDialog';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 import API from '../../util/BountyAPI';
 
 export default class BountyList extends React.Component {
-    selectedBounty = "";
-    employeeID = 0;
-    takeBountyDisabled = true;
-    bountyErrorText = '';
 
     styles = makeStyles(theme => ({
         root: {
@@ -34,12 +37,17 @@ export default class BountyList extends React.Component {
         this.state = {
             bounties: [],
             listState: [],
-            dialogIsOpen: false
+            selectedBounty: {},
+            dialogIsOpen: false,
+            selectedEmployeeID: 0,
+            takeBountyButtonDisabled: true,
+            dialogErrorText : ""
         }
 
         this.handleDialogOpen = this.handleDialogOpen.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.onEmployeeIDChange = this.onEmployeeIDChange.bind(this);
+        this.takeBounty = this.takeBounty.bind(this);
     }
 
     componentDidMount() {
@@ -84,42 +92,58 @@ export default class BountyList extends React.Component {
     }
 
     handleDialogClose() {
-        var val = this.state.dialogIsOpen;
-
         this.setState({
-            dialogIsOpen: !val
+            dialogIsOpen: false,
+            dialogErrorText: '',
+            takeBountyButtonDisabled: false,
+            selectedBounty: {},
+            selectedEmployeeID: 0
         });
     }
 
     handleDialogOpen(selectedItem) {
-        this.selectedBounty = selectedItem.Title;
+        
         this.setState({
+            selectedBounty: selectedItem,
             dialogIsOpen: true
         });
     }
 
     onEmployeeIDChange(event) {
-        this.employeeID = event.target.value;
-        if (this.employeeID.length < 5) return;
+        var employeeID = event.target.value;
+        if (employeeID.length < 5) {
 
-        this.selectedBounty = 'fooooo';
-        API.isEmployeeIDValid(this.employeeID).then(res => {
+            this.setState({
+                takeBountyButtonDisabled: true
+            });
+
+            return;
+        }
+
+        this.setState({
+            selectedEmployeeID: employeeID
+        });
+
+        API.isEmployeeIDValid(employeeID).then(res => {
             if (res.data) {
-                console.log('in true');
-                this.takeBountyEnabled = true;
-                this.bountyErrorText = '';
+                this.setState({
+                    takeBountyButtonDisabled : false,
+                    dialogErrorText: ''
+                });
             }
             else {
-                console.log('in else');
-                this.takeBountyEnabled = false;
-                this.bountyErrorText = 'Invalid ID. Try Again';
+                this.setState({
+                    takeBountyButtonDisabled: true,
+                    dialogErrorText: 'Invalid ID. Try Again'
+                });
             }
-            this.bountyErrorText = 'Invalid ID. Try Again';
         })
     }
 
     takeBounty() {
-        console.log('take the bounty');
+        API.assignBounty(this.state.selectedEmployeeID, this.state.selectedBounty.ID).then(res => {
+            console.log("after assignment");
+        });
         this.handleDialogClose();
     }
 
@@ -168,14 +192,40 @@ export default class BountyList extends React.Component {
                              })}
                 </List>
 
-                <BountyDialog
-                    IsOpen={this.state.dialogIsOpen}
-                    onClose={this.handleDialogClose}
-                    selectedBounty={this.selectedBounty} 
-                    onEmployeeIDChange={this.onEmployeeIDChange}
-                    takeBounty={this.takeBounty}
-                    takeBountyDisabled={this.takeBountyDisabled}
-                    bountyErrorText={this.bountyErrorText}/>
+                <Dialog open={this.state.dialogIsOpen} onClose={this.handleDialogClose} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Take Bounty</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Provide the information below to pickup this bounty.
+                        </DialogContentText>
+                        Selected Bounty: {this.state.selectedBounty.Title}
+                        <br />
+                        <b>{this.state.dialogErrorText}</b>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="empid"
+                            label="Employee ID"
+                            onChange={this.onEmployeeIDChange}
+                            type="number"
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            onInput={(e) => {
+                                e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 5)
+                            }}
+                        />
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleDialogClose} color="primary">
+                            Cancel </Button>
+                        <Button onClick={this.takeBounty} disabled={this.state.takeBountyButtonDisabled} color="primary">
+                            Take Bounty </Button>
+                    </DialogActions>
+                </Dialog>
+
             </div>
                 );
             }
