@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -31,6 +30,18 @@ namespace bounty_board.repos
 
             return bounties;
 
+        }
+
+        public IEnumerable<IUser> GetUsers(int? id)
+        {
+            IEnumerable<IUser> users;
+
+            using (var cnx = new SqlConnection(_cnxString))
+            {
+                users = cnx.Query<User>(string.Format("exec usp_Users_Select @id={0}", id)).ToList();
+            }
+
+            return users;
         }
 
         public bool IsEmployeeIDValid(int id)

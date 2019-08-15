@@ -25,6 +25,12 @@ namespace bounty_board.Controllers
         }
 
         [HttpGet]
+        public string GetUsers(int? id)
+        {
+            return JsonConvert.SerializeObject(_repo.GetUsers(id));
+        }
+
+        [HttpGet]
         public string IsEmployeeIDValid(int id)
         {
             return JsonConvert.SerializeObject(_repo.IsEmployeeIDValid(id));

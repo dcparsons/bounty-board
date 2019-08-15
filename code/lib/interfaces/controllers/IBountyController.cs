@@ -7,5 +7,6 @@ namespace bounty_board.controllers
         string GetBounties();
         string IsEmployeeIDValid(int id);
         void AssignBounty(BountyAssignment model);
+        string GetUsers(int? id);
     }
 }

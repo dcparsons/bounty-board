@@ -2,10 +2,10 @@
 
 namespace bounty_board.models
 {
-    public interface IUserRank
+    public interface IUser
     {
         string Name { get; set; }
-        int Score { get; set; }
+        int Points { get; set; }
         IEnumerable<IBounty> CompletedBounties { get; set; }
     }
 }

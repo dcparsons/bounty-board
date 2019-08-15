@@ -8,6 +8,7 @@ namespace bounty_board.repos
     {
         IEnumerable<IBounty> GetBounties();
         bool IsEmployeeIDValid(int id);
+        IEnumerable<IUser> GetUsers(int? id);
         void AssignBounty(IBountyAssignment bountyAssignment);
     }
 }
