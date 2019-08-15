@@ -15,6 +15,8 @@ import API from '../../util/BountyAPI';
 export default class BountyList extends React.Component {
     selectedBounty = "";
     employeeID = 0;
+    takeBountyDisabled = true;
+    bountyErrorText = '';
 
     styles = makeStyles(theme => ({
         root: {
@@ -37,6 +39,7 @@ export default class BountyList extends React.Component {
 
         this.handleDialogOpen = this.handleDialogOpen.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
+        this.onEmployeeIDChange = this.onEmployeeIDChange.bind(this);
     }
 
     componentDidMount() {
@@ -99,13 +102,25 @@ export default class BountyList extends React.Component {
         this.employeeID = event.target.value;
         if (this.employeeID.length < 5) return;
 
+        this.selectedBounty = 'fooooo';
         API.isEmployeeIDValid(this.employeeID).then(res => {
-
+            if (res.data) {
+                console.log('in true');
+                this.takeBountyEnabled = true;
+                this.bountyErrorText = '';
+            }
+            else {
+                console.log('in else');
+                this.takeBountyEnabled = false;
+                this.bountyErrorText = 'Invalid ID. Try Again';
+            }
+            this.bountyErrorText = 'Invalid ID. Try Again';
         })
     }
 
     takeBounty() {
-        
+        console.log('take the bounty');
+        this.handleDialogClose();
     }
 
     render() {
@@ -153,8 +168,14 @@ export default class BountyList extends React.Component {
                              })}
                 </List>
 
-                <BountyDialog IsOpen={this.state.dialogIsOpen} onClose={this.handleDialogClose}
-                    selectedBounty={this.selectedBounty} onEmployeeIDChange={this.onEmployeeIDChange} takeBounty={this.takeBounty} />
+                <BountyDialog
+                    IsOpen={this.state.dialogIsOpen}
+                    onClose={this.handleDialogClose}
+                    selectedBounty={this.selectedBounty} 
+                    onEmployeeIDChange={this.onEmployeeIDChange}
+                    takeBounty={this.takeBounty}
+                    takeBountyDisabled={this.takeBountyDisabled}
+                    bountyErrorText={this.bountyErrorText}/>
             </div>
                 );
             }

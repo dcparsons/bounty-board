@@ -35,16 +35,25 @@ export default class Countdown extends React.Component {
 
         var seconds = parseInt(currentTicks / 1000);
         currentTicks -= seconds * 1000;
-        
+
+        days = this.formatNumber(days);
+        hours = this.formatNumber(hours);
+        mins = this.formatNumber(mins);
+        seconds = this.formatNumber(seconds);
+
         this.setState({
             counterText: days + " DAYS " + hours + " HOURS " + mins + " MINUTES " + seconds + " SECONDS ",
         });
     }
 
+    formatNumber(value) {
+        return value > 9 ? value : "0" + value;
+    }
+
     render() {
         return (
             <div>
-                {this.state.counterText}
+                TIME REMAINING: {this.state.counterText}
             </div>
         );
     }

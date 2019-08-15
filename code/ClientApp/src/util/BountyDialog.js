@@ -8,9 +8,20 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default class BountyDialog extends React.Component {
-
+    active = true;
     constructor(props) {
-        super(props);
+        super(props);    
+        this.state = {
+            active: this.active
+        };
+        this.onEmployeeIDChange = this.onEmployeeIDChange.bind(this);
+    }
+
+    onEmployeeIDChange() {
+        this.active = !this.active;
+        this.setState({
+            active : this.active
+        });
     }
 
     render() {
@@ -24,12 +35,13 @@ export default class BountyDialog extends React.Component {
                         </DialogContentText>
                         Selected Bounty: {this.props.selectedBounty}
                         <br />
+                        
                         <TextField
                             autoFocus
                             margin="dense"
                             id="empid"
                             label="Employee ID"
-                            onChange={this.props.onEmployeeIDChange}
+                            onChange={this.onEmployeeIDChange}
                             type="number"
                             fullWidth
                             InputLabelProps={{
@@ -39,11 +51,12 @@ export default class BountyDialog extends React.Component {
                                 e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 5)
                             }}
                         />
+                        
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.props.onClose} color="primary">
                             Cancel </Button>
-                        <Button onClick={this.props.takeBounty} color="primary">
+                        <Button onClick={this.props.takeBounty} disabled={this.state.active} color="primary">
                             Take Bounty </Button>
                     </DialogActions>
                 </Dialog>

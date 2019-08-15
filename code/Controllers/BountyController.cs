@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace bounty_board.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class BountyController : ControllerBase, IBountyController
     {

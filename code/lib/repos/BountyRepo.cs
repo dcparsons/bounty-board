@@ -38,7 +38,10 @@ namespace bounty_board.repos
             var retval = false;
             using (var cnx = new SqlConnection(_cnxString))
             {
-                retval = ((SqlDataReader)cnx.ExecuteReader("exec usp_Users_Select @id", new { id = id }, commandType:CommandType.StoredProcedure)).HasRows;
+                //This is pretty messy but Dapper doesn't expose an IDataReader or a HasRows property
+                var rdr = (SqlDataReader) ((IWrappedDataReader) cnx.ExecuteReader(
+                    string.Format("exec usp_Users_Select @id={0}", id))).Reader;
+                retval = rdr.HasRows;
             }
 
             return retval;

@@ -2,7 +2,7 @@
 
 export default {
     getBounties: function () {
-        return axios.get(process.env.REACT_APP_API_URL + "bounty");
+        return axios.get(process.env.REACT_APP_API_URL + "bounty/GetBounties");
     },
     isEmployeeIDValid: function (empID) {
         return axios.get(process.env.REACT_APP_API_URL + "bounty/IsEmployeeIDValid", {

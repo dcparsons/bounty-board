@@ -9,7 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
-import Countdown from '../../util/Countdown';
+import Countdown from '../widgets/Countdown';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
@@ -58,9 +58,6 @@ function Header(props) {
                         <Grid item xs />
                         <Grid item>
                             <Countdown endDateTime={new Date('2019-11-29T23:59:59')} />
-                            <Typography className={classes.link} component="span">
-                                
-              </Typography>
                         </Grid>
                     </Grid>
                 </Toolbar>
